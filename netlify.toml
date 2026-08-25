@@ -1,3 +1,8 @@
 [build]
   command = "npm run build"
   publish = ".next"
+
+# Wymusza aktualny Next.js Runtime także dla automatycznych deployów z GitHuba.
+# Netlify instaluje bieżącą wersję adaptera; nie przypinamy starej wersji.
+[[plugins]]
+  package = "@netlify/plugin-nextjs"

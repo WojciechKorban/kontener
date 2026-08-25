@@ -118,7 +118,7 @@ Obrazy produktowe są serwowane z Supabase Storage, a `next/image` generuje wła
 
 ## Deployment na Netlify
 
-Repozytorium zawiera `netlify.toml`, dlatego Netlify powinien użyć następujących ustawień bez dodatkowych pluginów i redirectów:
+Repozytorium zawiera `netlify.toml`, dlatego Netlify powinien użyć następujących ustawień bez redirectów SPA:
 
 ```text
 Base directory:     puste
@@ -140,7 +140,7 @@ NEXT_PUBLIC_SUPABASE_ANON_KEY=...
 SUPABASE_SERVICE_ROLE_KEY=...
 ```
 
-Zmienne Supabase są potrzebne do działania panelu administratora. Publiczna witryna uruchomi się również bez nich, korzystając z danych demonstracyjnych. Dla wysyłki e-mail dodaj opcjonalnie `RESEND_API_KEY`, `RESEND_FROM` i `INQUIRY_EMAIL`. Po zmianie zmiennych uruchom **Clear cache and deploy site**. Nie ustawiaj `NETLIFY_NEXT_PLUGIN_SKIP` i nie instaluj ręcznie starego `@netlify/plugin-nextjs`.
+Zmienne Supabase są potrzebne do działania panelu administratora. Publiczna witryna uruchomi się również bez nich, korzystając z danych demonstracyjnych. Dla wysyłki e-mail dodaj opcjonalnie `RESEND_API_KEY`, `RESEND_FROM` i `INQUIRY_EMAIL`. Po zmianie zmiennych uruchom **Clear cache and deploy site**. Nie ustawiaj `NETLIFY_NEXT_PLUGIN_SKIP`. Projekt jawnie włącza bieżący `@netlify/plugin-nextjs` bez przypinania wersji, ponieważ automatyczna detekcja runtime była pomijana przez pierwotną konfigurację witryny Netlify.
 
 ## Bezpieczeństwo
 
