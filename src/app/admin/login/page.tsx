@@ -1,0 +1,1 @@
+import {LoginForm}from"@/components/login-form";export default function Login(){return <main className="mx-auto max-w-md border bg-white p-8"><p className="eyebrow">Bezpieczny panel</p><h1 className="display mt-4 text-5xl">Logowanie</h1><p className="mt-4 text-sm text-[#777]">Zaloguj się kontem administratora Supabase.</p><LoginForm/></main>}

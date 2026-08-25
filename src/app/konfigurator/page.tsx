@@ -1,0 +1,2 @@
+import { Configurator } from "@/components/configurator";
+export default function ConfiguratorPage(){return <main className="bg-[#171916] py-16 md:py-24"><div className="container"><div className="mb-10 max-w-3xl text-white"><p className="eyebrow !text-white/50">Twój moduł</p><h1 className="display mt-4 text-6xl md:text-8xl">Skonfiguruj przestrzeń po swojemu.</h1></div><Configurator/></div></main>}

@@ -1,0 +1,2 @@
+import Link from "next/link";
+export function Logo({ light = false }: { light?: boolean }) { return <Link href="/" aria-label="MODULA — strona główna" className={`inline-flex items-center gap-3 font-extrabold tracking-[.2em] text-sm ${light ? "text-white" : "text-[#171916]"}`}><span className={`grid h-8 w-8 place-items-center border ${light ? "border-white/50" : "border-[#171916]"}`}><i className="block h-3 w-3 border-[3px] border-current" /></span>MODULA</Link>; }

@@ -1,0 +1,1 @@
+import { ProductForm } from "@/components/product-form";export default function NewProduct(){return <main><div className="mb-7"><p className="eyebrow">Produkty</p><h1 className="mt-2 text-3xl font-bold">Dodaj nowy model</h1><p className="mt-2 text-sm text-[#777]">Uzupełnij informacje, dodaj zdjęcia i opublikuj bez zmian w kodzie.</p></div><ProductForm/></main>}

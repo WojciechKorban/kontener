@@ -1,0 +1,5 @@
+import type { Metadata } from "next";
+import { Catalog } from "@/components/catalog";
+import { getProducts } from "@/lib/data";
+export const metadata: Metadata = { title: "Modele kontenerów i domów modułowych", description: "Poznaj całoroczne kontenery mieszkalne, biurowe i usługowe MODULA. Filtruj po powierzchni, cenie i przeznaczeniu." };
+export default async function Models({ searchParams }: { searchParams: Promise<{ category?: string }> }) { const [products, params] = await Promise.all([getProducts(), searchParams]); return <main><section className="bg-[#f1f0eb] py-20"><div className="container"><p className="eyebrow">Katalog</p><h1 className="display mt-5 text-6xl md:text-8xl">Znajdź swój model</h1><p className="mt-6 max-w-2xl text-sm leading-7 text-[#666b63]">Dom, biuro lub przestrzeń dla biznesu. Wszystkie modele są produkowane w kontrolowanych warunkach i dostarczane na działkę.</p></div></section><section className="section"><div className="container"><Catalog products={products} initialCategory={params.category || "Wszystkie"}/></div></section></main>; }
