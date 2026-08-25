@@ -116,6 +116,32 @@ Do logowania służy konto utworzone przez `npm run create:admin` w Supabase Aut
 
 Obrazy produktowe są serwowane z Supabase Storage, a `next/image` generuje właściwe rozmiary i formaty dla list oraz galerii. Nowo opublikowany produkt trafia automatycznie do katalogu, własnego URL i dynamicznej sitemapy — bez zmian w kodzie i redeployu.
 
+## Deployment na Netlify
+
+Repozytorium zawiera `netlify.toml`, dlatego Netlify powinien użyć następujących ustawień bez dodatkowych pluginów i redirectów:
+
+```text
+Base directory:     puste
+Build command:      npm run build
+Publish directory:  .next
+Node.js:            22
+```
+
+Projekt korzysta z App Routera, Route Handlers, middleware/proxy, SSR i Supabase Auth, dlatego nie używa `output: "export"`. Nie dodawaj reguły `/* -> /index.html`; routing Next.js jest obsługiwany automatycznie przez aktualny Netlify Next.js Runtime.
+
+Skrypt `npm run build` używa wspieranego trybu webpack (`next build --webpack`), który generuje standardowy katalog `.next` zgodny z Netlify. Nie zmienia to sposobu działania SSR, Route Handlers ani routingu aplikacji.
+
+W Netlify przejdź do **Project configuration → Environment variables** i ustaw przynajmniej:
+
+```env
+NEXT_PUBLIC_SITE_URL=https://nazwa-projektu.netlify.app
+NEXT_PUBLIC_SUPABASE_URL=https://twoj-projekt.supabase.co
+NEXT_PUBLIC_SUPABASE_ANON_KEY=...
+SUPABASE_SERVICE_ROLE_KEY=...
+```
+
+Zmienne Supabase są potrzebne do działania panelu administratora. Publiczna witryna uruchomi się również bez nich, korzystając z danych demonstracyjnych. Dla wysyłki e-mail dodaj opcjonalnie `RESEND_API_KEY`, `RESEND_FROM` i `INQUIRY_EMAIL`. Po zmianie zmiennych uruchom **Clear cache and deploy site**. Nie ustawiaj `NETLIFY_NEXT_PLUGIN_SKIP` i nie instaluj ręcznie starego `@netlify/plugin-nextjs`.
+
 ## Bezpieczeństwo
 
 Panel jest chroniony sesją Supabase Auth i dokładną rolą `admin` przez `src/proxy.ts`. Każdy administracyjny Route Handler ponownie wywołuje serwerowe `requireAdmin()`: brak konfiguracji daje 503, brak sesji 401, a konto bez roli administratora 403. Nie istnieje demonstracyjne obejście zabezpieczeń.
