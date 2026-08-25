@@ -55,6 +55,16 @@ npm run dev
 
 Skrypt `scripts/create-admin.mjs` używa Supabase Admin API, potwierdza adres e-mail i przypisuje dokładną rolę `admin`. Jest idempotentny: kolejne uruchomienie aktualizuje to samo konto oraz ustawia hasło z `ADMIN_PASSWORD`, zamiast tworzyć duplikat.
 
+## Dodanie oferty „DOMEK SAUNA”
+
+Oferta z ceną 140 000 zł netto, wyposażeniem pod klucz, sauną, klimatyzacją i rekuperacją jest częścią danych demonstracyjnych oraz `supabase/seed.sql`. Jeśli baza została już wcześniej utworzona, dodaj lub zaktualizuj ofertę bez duplikatów poleceniem:
+
+```bash
+npm run seed:container-sauna
+```
+
+Polecenie wymaga `NEXT_PUBLIC_SUPABASE_URL` i `SUPABASE_SERVICE_ROLE_KEY` w `.env.local`. Nieznane wymiary i powierzchnia pozostają puste. Skrypt dodaje tymczasową wizualizację z `public/images/hero-modular.png` tylko wtedy, gdy produkt nie ma jeszcze żadnego zdjęcia. Po zalogowaniu podmień ją w panelu na rzeczywiste fotografie ogłoszenia.
+
 Panel lokalny:
 
 ```text
@@ -93,6 +103,16 @@ Testy bez zewnętrznej bazy obejmują katalog, galerię, formularz wyceny oraz z
 3. Ustaw `NEXT_PUBLIC_SITE_URL` na docelową domenę.
 4. Wdróż projekt. Vercel automatycznie rozpozna Next.js.
 5. Dodaj domenę Vercel do dozwolonych redirect URLs w Supabase Auth.
+
+### Logowanie bez konta Vercel
+
+Administrator loguje się bezpośrednio na stronie pod adresem:
+
+```text
+https://twoja-domena.pl/admin/login
+```
+
+Do logowania służy konto utworzone przez `npm run create:admin` w Supabase Auth — konto Vercel nie jest potrzebne. Produkcyjny deployment musi być publiczny. W ustawieniach projektu Vercel wyłącz ochronę wymagającą logowania Vercel dla środowiska Production (Deployment Protection / Vercel Authentication). Ochronę podglądów Preview możesz pozostawić włączoną. Zmiana tej opcji odbywa się w panelu Vercel i nie może być wymuszona przez kod aplikacji.
 
 Obrazy produktowe są serwowane z Supabase Storage, a `next/image` generuje właściwe rozmiary i formaty dla list oraz galerii. Nowo opublikowany produkt trafia automatycznie do katalogu, własnego URL i dynamicznej sitemapy — bez zmian w kodzie i redeployu.
 

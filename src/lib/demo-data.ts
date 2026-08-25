@@ -26,6 +26,52 @@ export const products: Product[] = seed.map((p, i) => ({
   purpose: i === 4 ? ["biuro"] : i === 5 ? ["usługi", "gastronomia"] : ["mieszkanie", "rekreacja"], featured: [1,2,3].includes(i), createdAt: `2026-0${i + 1}-01`, status: "PUBLISHED", images: gallery.map((x, n) => ({ ...x, id: `${i}-${n}`, is_main: n === 0, position: n, url: [x.url, "/images/modern-olive.png", "/images/interior-oak.png"][(n + i) % 3] })), parameters: baseParams(p[3], p[5]), features,
   variants: [{ name: "Standard", description: "Gotowy moduł z podstawowym wykończeniem", price: p[4] }, { name: "Comfort", description: "Rozszerzone wyposażenie i klimatyzacja", price: p[4] + 25000 }, { name: "Premium", description: "Wykończenie premium i system smart home", price: p[4] + 49000 }],
 }));
+
+products.unshift({
+  id: "demo-sauna",
+  name: "DOMEK SAUNA",
+  slug: "domek-sauna-kontener-morski",
+  category: "Mieszkalne",
+  categorySlug: "mieszkalne",
+  shortDescription: "Nowy, nieużywany domek z kontenera morskiego, wykończony pod klucz i wyposażony w prywatną saunę.",
+  description: "Gotowy domek z kontenera morskiego z salonem i kuchnią, sypialnią, łazienką z prysznicem oraz sauną z piecem elektrycznym. Obiekt jest ocieplony pianą PUR i posiada kompletne wyposażenie opisane w ofercie. Realizujemy także zamówienia indywidualne: inne wielkości, układy pomieszczeń, łączenie kilku kontenerów oraz zabudowę wielokondygnacyjną.",
+  priceFrom: 140000,
+  priceNet: 140000,
+  area: 0,
+  dimensions: "Na zamówienie",
+  rooms: 0,
+  bedrooms: 1,
+  purpose: ["mieszkanie", "rekreacja", "sauna"],
+  featured: true,
+  createdAt: "2026-08-25",
+  status: "PUBLISHED",
+  images: [{
+    id: "demo-sauna-main",
+    url: "/images/hero-modular.png",
+    alt: "Tymczasowa wizualizacja domku z kontenera morskiego z sauną",
+    position: 0,
+    type: "EXTERIOR",
+    is_main: true,
+  }],
+  parameters: [
+    { name: "Stan", value: "Nowy, nieużywany" },
+    { name: "Wykończenie", value: "Pod klucz" },
+    { name: "Konstrukcja", value: "Kontener morski" },
+    { name: "Izolacja", value: "Piana PUR" },
+    { name: "Okna", value: "Trzyszybowe" },
+    { name: "Ogrzewanie", value: "Podłogowe elektryczne" },
+    { name: "Wentylacja", value: "Rekuperator" },
+    { name: "Klimatyzacja", value: "Klimatyzator" },
+  ],
+  features: {
+    Wnętrze: ["Salon z kuchnią", "Sypialnia", "Wodoodporne panele winylowe w sypialni i kuchni"],
+    Kuchnia: ["Zmywarka", "Lodówka", "Filtr wody"],
+    Łazienka: ["Łazienka z prysznicem"],
+    Sauna: ["Sauna", "Piec elektryczny"],
+    Instalacje: ["Klimatyzator", "Rekuperator", "Elektryczne ogrzewanie podłogowe"],
+  },
+  variants: [],
+});
 export const categories = ["Wszystkie", "Mieszkalne", "Modułowe", "Biurowe", "Usługowe", "Gastronomiczne", "Rekreacyjne", "Całoroczne"];
 export const faqs = [
   ["Ile trwa produkcja kontenera?", "Standardowy proces produkcji zajmuje zwykle 8–12 tygodni od akceptacji projektu."],

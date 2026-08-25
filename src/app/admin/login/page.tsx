@@ -10,9 +10,9 @@ export default async function Login({
   const { error } = await searchParams;
 
   return (
-    <main className="mx-auto max-w-md border bg-white p-8">
+    <main className="w-full max-w-md border bg-white p-5 shadow-[0_24px_80px_rgba(23,25,22,.08)] sm:p-8">
       <p className="eyebrow">Bezpieczny panel</p>
-      <h1 className="display mt-4 text-5xl">Logowanie</h1>
+      <h1 className="display mt-4 text-5xl sm:text-6xl">Logowanie</h1>
       <p className="mt-4 text-sm text-[#777]">
         Zaloguj się kontem administratora Supabase.
       </p>

@@ -3,6 +3,7 @@ import { Manrope, Cormorant_Garamond } from "next/font/google";
 import { Footer } from "@/components/footer";
 import { Header } from "@/components/header";
 import { MobileBar } from "@/components/mobile-bar";
+import { salesContacts } from "@/lib/contact";
 import "./globals.css";
 
 const sans = Manrope({ subsets: ["latin", "latin-ext"], variable: "--font-sans" });
@@ -17,6 +18,6 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  const organization = { "@context": "https://schema.org", "@type": "Organization", name: "MODULA", url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000", logo: "/favicon.ico", contactPoint: { "@type": "ContactPoint", telephone: "+48-500-600-700", contactType: "sales", areaServed: "PL" } };
+  const organization = { "@context": "https://schema.org", "@type": "Organization", name: "MODULA", url: process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000", logo: "/favicon.ico", contactPoint: salesContacts.map(contact=>({ "@type": "ContactPoint", telephone: contact.phoneDisplay, contactType: "sales", areaServed: "PL" })) };
   return <html lang="pl" data-scroll-behavior="smooth" className={`${sans.variable} ${serif.variable}`}><body style={{ fontFamily: "var(--font-sans)" }}><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(organization) }}/><Header />{children}<Footer /><MobileBar /></body></html>;
 }

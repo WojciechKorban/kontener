@@ -56,14 +56,14 @@ export function LoginForm({ configured }: { configured: boolean }) {
     <form onSubmit={login} className="mt-8 space-y-5">
       <label className="block text-xs font-bold uppercase tracking-wider">
         E-mail
-        <input className="field mt-2" name="email" type="email" required />
+        <input className="field mt-2 text-base" name="email" type="email" autoComplete="username" inputMode="email" required />
       </label>
       <label className="block text-xs font-bold uppercase tracking-wider">
         Hasło
-        <input className="field mt-2" name="password" type="password" required />
+        <input className="field mt-2 text-base" name="password" type="password" autoComplete="current-password" required />
       </label>
       {error && <p className="text-sm text-red-700">{error}</p>}
-      <button className="btn btn-dark w-full" disabled={loading || !configured}>
+      <button className="btn btn-dark w-full" disabled={loading || !configured} type="submit">
         {loading && <Loader2 size={16} className="animate-spin" />}
         Zaloguj się
       </button>
