@@ -19,7 +19,7 @@ create table faq(id uuid primary key default gen_random_uuid(),question text not
 create table settings(key text primary key,value jsonb not null default '{}',updated_at timestamptz not null default now());
 create table profiles(id uuid primary key references auth.users(id) on delete cascade,role text not null default 'editor' check(role in ('admin','editor')),created_at timestamptz not null default now());
 
-create or replace function is_admin() returns boolean language sql stable security definer set search_path=public as $$select exists(select 1 from profiles where id=auth.uid() and role in ('admin','editor'))$$;
+create or replace function is_admin() returns boolean language sql stable security definer set search_path=public as $$select exists(select 1 from profiles where id=auth.uid() and role='admin')$$;
 create or replace function touch_updated_at() returns trigger language plpgsql as $$begin new.updated_at=now();return new;end$$;
 create trigger products_touch before update on products for each row execute function touch_updated_at();
 create trigger realizations_touch before update on realizations for each row execute function touch_updated_at();
@@ -35,7 +35,6 @@ create policy "published variants public read" on product_variants for select us
 create policy "published realizations public read" on realizations for select using(status='PUBLISHED' or is_admin());
 create policy "published realization images public read" on realization_images for select using(exists(select 1 from realizations r where r.id=realization_id and (r.status='PUBLISHED' or is_admin())));
 create policy "visible faq public read" on faq for select using(visible or is_admin());
-create policy "settings public read" on settings for select using(true);
 create policy "admins manage categories" on categories for all using(is_admin()) with check(is_admin());
 create policy "admins manage products" on products for all using(is_admin()) with check(is_admin());
 create policy "admins manage images" on product_images for all using(is_admin()) with check(is_admin());

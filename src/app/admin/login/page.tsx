@@ -1,1 +1,28 @@
-import {LoginForm}from"@/components/login-form";export default function Login(){return <main className="mx-auto max-w-md border bg-white p-8"><p className="eyebrow">Bezpieczny panel</p><h1 className="display mt-4 text-5xl">Logowanie</h1><p className="mt-4 text-sm text-[#777]">Zaloguj się kontem administratora Supabase.</p><LoginForm/></main>}
+import { LoginForm } from "@/components/login-form";
+import { hasAdminConfig } from "@/lib/supabase-server";
+
+export default async function Login({
+  searchParams,
+}: {
+  searchParams: Promise<{ error?: string }>;
+}) {
+  const configured = hasAdminConfig();
+  const { error } = await searchParams;
+
+  return (
+    <main className="mx-auto max-w-md border bg-white p-8">
+      <p className="eyebrow">Bezpieczny panel</p>
+      <h1 className="display mt-4 text-5xl">Logowanie</h1>
+      <p className="mt-4 text-sm text-[#777]">
+        Zaloguj się kontem administratora Supabase.
+      </p>
+      {(!configured || error === "configuration") && (
+        <p className="mt-5 border border-amber-300 bg-amber-50 p-4 text-sm text-amber-900">
+          Panel jest zablokowany, dopóki nie skonfigurujesz Supabase i konta
+          administratora.
+        </p>
+      )}
+      <LoginForm configured={configured} />
+    </main>
+  );
+}

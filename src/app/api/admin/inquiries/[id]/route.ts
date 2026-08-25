@@ -1,1 +1,35 @@
-import{NextRequest,NextResponse}from"next/server";import{createClient}from"@supabase/supabase-js";import{serverSupabase}from"@/lib/supabase-server";const valid=["NEW","CONTACTED","OFFER_PREPARATION","OFFER_SENT","WON","LOST"];export async function PATCH(req:NextRequest,{params}:{params:Promise<{id:string}>}){const{id}=await params;const{status}=await req.json();if(!valid.includes(status))return NextResponse.json({error:"status"},{status:400});const url=process.env.NEXT_PUBLIC_SUPABASE_URL,key=process.env.SUPABASE_SERVICE_ROLE_KEY;if(!url||!key)return NextResponse.json({ok:true,demo:true});const auth=await serverSupabase();if(!(await auth.auth.getUser()).data.user)return NextResponse.json({error:"Unauthorized"},{status:401});const db=createClient(url,key);const{error}=await db.from("inquiries").update({status}).eq("id",id);return error?NextResponse.json({error:error.message},{status:500}):NextResponse.json({ok:true})}
+import { NextRequest, NextResponse } from "next/server";
+import {
+  adminAuthErrorResponse,
+  adminServiceClient,
+  requireAdmin,
+} from "@/lib/admin-auth";
+
+const statuses = new Set([
+  "NEW",
+  "CONTACTED",
+  "OFFER_PREPARATION",
+  "OFFER_SENT",
+  "WON",
+  "LOST",
+]);
+
+export async function PATCH(
+  request: NextRequest,
+  { params }: { params: Promise<{ id: string }> },
+) {
+  try {
+    await requireAdmin();
+    const db = adminServiceClient();
+    const { id } = await params;
+    const { status } = await request.json();
+    if (!statuses.has(status)) {
+      return NextResponse.json({ error: "Nieprawidłowy status" }, { status: 400 });
+    }
+    const { error } = await db.from("inquiries").update({ status }).eq("id", id);
+    if (error) throw error;
+    return NextResponse.json({ ok: true });
+  } catch (error) {
+    return adminAuthErrorResponse(error);
+  }
+}

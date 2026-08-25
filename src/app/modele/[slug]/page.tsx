@@ -3,7 +3,8 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { Check, ChevronRight, Ruler, Users, BedDouble, ArrowRight } from "lucide-react";
-import { getProduct, getProducts, formatPrice } from "@/lib/data";
+import { getProduct, getProducts } from "@/lib/data";
+import { formatPrice } from "@/lib/format";
 import { Gallery } from "@/components/gallery";
 import { ProductCard } from "@/components/product-card";
 export async function generateStaticParams() { return (await getProducts()).map(p=>({slug:p.slug})); }

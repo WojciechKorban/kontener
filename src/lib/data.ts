@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import "server-only";
 import { createClient } from "@supabase/supabase-js";
 import { products as demoProducts, faqs as demoFaqs } from "./demo-data";
 import type { Product } from "./types";
@@ -13,9 +14,8 @@ export async function getProducts(): Promise<Product[]> {
   if (error || !data?.length) return demoProducts;
   return data.map(mapProduct);
 }
-export async function getAdminProducts(): Promise<Product[]> { if(!configured()||!process.env.SUPABASE_SERVICE_ROLE_KEY)return demoProducts;const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY);const{data,error}=await db.from("products").select(selection).order("created_at",{ascending:false});return error||!data?.length?demoProducts:data.map(mapProduct); }
+export async function getAdminProducts(): Promise<Product[]> { if(!configured()||!process.env.SUPABASE_SERVICE_ROLE_KEY)return[];const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.SUPABASE_SERVICE_ROLE_KEY);const{data,error}=await db.from("products").select(selection).order("created_at",{ascending:false});if(error)throw error;return(data||[]).map(mapProduct); }
 export async function getFaqs(): Promise<readonly (readonly string[])[]> { if(!configured())return demoFaqs;const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);const{data,error}=await db.from("faq").select("question,answer").eq("visible",true).order("position");return error||!data?.length?demoFaqs:data.map(x=>[x.question,x.answer]); }
 export type Realization={id:string;name:string;location:string;area:number;description:string;image:string};
 export async function getRealizations():Promise<Realization[]>{const fallback=[{id:"r1",name:"FAMILY 50 — Kielce",location:"Kielce",area:50,description:"2 sypialnie · realizacja pod klucz",image:"/images/hero-modular.png"},{id:"r2",name:"LIVING 25 — Mazury",location:"Mazury",area:25,description:"moduł rekreacyjny",image:"/images/modern-olive.png"},{id:"r3",name:"FAMILY 35 — Gdańsk",location:"Gdańsk",area:35,description:"realizacja pod klucz",image:"/images/interior-oak.png"}];if(!configured())return fallback;const db=createClient(process.env.NEXT_PUBLIC_SUPABASE_URL!,process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!);const{data,error}=await db.from("realizations").select("*, realization_images(*)").eq("status","PUBLISHED").order("created_at",{ascending:false});return error||!data?.length?fallback:data.map((x:any)=>({id:x.id,name:x.name,location:x.location||"Polska",area:Number(x.area||0),description:x.description,image:x.realization_images?.find((i:any)=>i.is_main)?.url||x.realization_images?.[0]?.url||"/images/hero-modular.png"}))}
 export async function getProduct(slug: string) { return (await getProducts()).find(p => p.slug === slug); }
-export function formatPrice(value: number) { return new Intl.NumberFormat("pl-PL", { style: "currency", currency: "PLN", maximumFractionDigits: 0 }).format(value); }
